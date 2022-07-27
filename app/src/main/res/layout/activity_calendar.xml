@@ -19,6 +19,14 @@
         android:layout_below="@id/calendarView"
         android:text="date"
         android:layout_centerHorizontal="true"
-        android:id="@+id/dateDetail" />
+        android:id="@+id/txtDateDetail" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtDateDetail"
+        android:text="date"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/txtSettingData" />
 
 </RelativeLayout>

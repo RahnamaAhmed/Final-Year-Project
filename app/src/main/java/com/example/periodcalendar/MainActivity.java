@@ -17,9 +17,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initWidgets();
+        onSetListeners();
+
+
+    }
+
+    private void initWidgets(){
         buttonCalender = (Button) findViewById(R.id.buttonCalender);
         buttonSettings = (Button) findViewById(R.id.buttonSettings);
+    }
 
+
+
+    private void onSetListeners () {
         buttonCalender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
