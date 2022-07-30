@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -45,12 +46,14 @@ public class NotesRecViewAdapter extends RecyclerView.Adapter<NotesRecViewAdapte
     public class  ViewHolder extends RecyclerView.ViewHolder {
         private TextView txtNoteDate;
         private TextView txtNoteName;
+        private CardView noteCard;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             txtNoteDate = (TextView) itemView.findViewById(R.id.txtNoteDate);
             txtNoteName = (TextView) itemView.findViewById(R.id.txtNoteName);
+            noteCard = (CardView) itemView.findViewById(R.id.noteCard);
         }
     }
 
