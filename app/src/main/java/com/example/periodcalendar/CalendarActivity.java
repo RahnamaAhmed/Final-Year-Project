@@ -4,10 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CalendarView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +23,7 @@ public class CalendarActivity extends AppCompatActivity {
     private CalendarView calendarView;
     private TextView txtDateDetail;
     private TextView txtSettingData;
+    private ImageView ivAddNewNote;
 
     private int day;
     private int month;
@@ -44,6 +48,7 @@ public class CalendarActivity extends AppCompatActivity {
         calendarView = (CalendarView) findViewById(R.id.calendarView);
         txtDateDetail = (TextView) findViewById(R.id.txtDateDetail);
         txtSettingData = (TextView) findViewById(R.id.txtSettingData);
+        ivAddNewNote = (ImageView) findViewById(R.id.ivAddNewNote);
     }
     
     private void getDateFromSetting() {
@@ -77,6 +82,21 @@ public class CalendarActivity extends AppCompatActivity {
                 Toast.makeText(CalendarActivity.this,
                         "Day: " + day+ "\nmonth: " + month + "\nyear:" + year,
                         Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        ivAddNewNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CalendarActivity.this , AddNoteActivity.class);
+                Bundle bundle = new Bundle();
+
+                bundle.putInt("day", day);
+                bundle.putInt("month", month);
+                bundle.putInt("year", year);
+
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
     }

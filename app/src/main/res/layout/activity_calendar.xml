@@ -29,4 +29,15 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/txtSettingData" />
 
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/ivAddNewNote"
+        android:src="@drawable/ic_add_circle"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="5dp"/>
+    
+
 </RelativeLayout>

@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button buttonCalender;
     private Button buttonSettings;
+    private Button buttonNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private void initWidgets(){
         buttonCalender = (Button) findViewById(R.id.buttonCalender);
         buttonSettings = (Button) findViewById(R.id.buttonSettings);
+        buttonNotes = (Button) findViewById(R.id.buttonNotes);
     }
 
 
@@ -35,6 +37,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, CalendarActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        buttonNotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AllNotesActivity.class);
                 startActivity(intent);
             }
         });
