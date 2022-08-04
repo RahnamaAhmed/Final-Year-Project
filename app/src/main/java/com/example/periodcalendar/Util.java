@@ -22,6 +22,10 @@ public class Util {
         allNotes.add(new Note(id, date, name));
     }
 
+    public boolean removeNote (Note note) {
+        return allNotes.remove(note);
+    }
+
     private void initAllBooks() {
     }
 }

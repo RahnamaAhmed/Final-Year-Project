@@ -1,10 +1,15 @@
 package com.example.periodcalendar;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -33,9 +38,52 @@ public class NotesRecViewAdapter extends RecyclerView.Adapter<NotesRecViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.txtNoteDate.setText(notes.get(position).getDate());
         holder.txtNoteName.setText(notes.get(position).getName());
+
+        holder.noteCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, "HI", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        holder.noteCard.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                final Note note = notes.get(position);
+
+                 new AlertDialog.Builder(context)
+                        .setTitle("Deleting" + note.getName())
+                        .setMessage("Are yop sure you want to delete " + note.getName() + "?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                if(util.removeNote(notes.get(position))){
+                                    notifyDataSetChanged();
+
+                                    Toast.makeText(context,
+                                            note.getName() + " Has successfully deleted",
+                                            Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(context, "Something went wrong",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .create()
+                        .show();
+
+                return true;
+            }
+        });
     }
 
     @Override
