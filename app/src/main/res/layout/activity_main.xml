@@ -14,14 +14,28 @@
         android:layout_centerHorizontal="true"
         android:textStyle="bold"
         android:textSize="30sp"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="50dp"/>
+
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:layout_centerHorizontal="true"
+        android:textStyle="italic"
+        android:textSize="15sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_below="@id/tvTitle"/>
 
     <Button
         android:id="@+id/buttonCalender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/tvDescription"
+        android:layout_centerInParent="true"
         android:text="Calender"
-        android:layout_centerInParent="true" />
+        android:layout_marginTop="50dp"/>
 
     <Button
         android:id="@+id/buttonNotes"
