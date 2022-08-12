@@ -10,23 +10,23 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Period Calender"
         android:layout_centerHorizontal="true"
-        android:textStyle="bold"
+        android:layout_marginTop="50dp"
+        android:text="Period Calender"
         android:textSize="30sp"
-        android:layout_marginTop="50dp"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Description"
+        android:layout_below="@id/tvTitle"
         android:layout_centerHorizontal="true"
-        android:textStyle="italic"
-        android:textSize="15sp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:layout_below="@id/tvTitle"/>
+        android:text="Description"
+        android:textSize="15sp"
+        android:textStyle="italic" />
 
     <Button
         android:id="@+id/buttonCalender"
@@ -34,8 +34,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tvDescription"
         android:layout_centerInParent="true"
-        android:text="Calender"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="50dp"
+        android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
+        android:text="Calender" />
 
     <Button
         android:id="@+id/buttonNotes"
@@ -43,14 +44,16 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/buttonCalender"
         android:layout_centerHorizontal="true"
+        android:drawableLeft="@drawable/ic_baseline_notes_24"
         android:text="Notes" />
 
     <Button
         android:id="@+id/buttonSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Settings"
-        android:layout_centerInParent="true"
         android:layout_below="@id/buttonNotes"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:drawableLeft="@drawable/ic_baseline_settings_24"
+        android:text="Settings" />
 </RelativeLayout>

@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Book/CSE/AndroidStudioProjects/PeriodCalendar/app/src/main/res/drawable/ic_baseline_calendar_today_24.xml" value="0.339" />
+        <entry key="..\:/Book/CSE/AndroidStudioProjects/PeriodCalendar/app/src/main/res/drawable/ic_baseline_notes_24.xml" value="0.339" />
+        <entry key="..\:/Book/CSE/AndroidStudioProjects/PeriodCalendar/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.339" />
         <entry key="..\:/Book/CSE/AndroidStudioProjects/PeriodCalendar/app/src/main/res/layout/activity_add_note.xml" value="0.37552083333333336" />
         <entry key="..\:/Book/CSE/AndroidStudioProjects/PeriodCalendar/app/src/main/res/layout/activity_all_notes.xml" value="0.37552083333333336" />
         <entry key="..\:/Book/CSE/AndroidStudioProjects/PeriodCalendar/app/src/main/res/layout/activity_calendar.xml" value="0.34782608695652173" />
