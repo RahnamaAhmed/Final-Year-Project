@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -41,6 +43,8 @@ public class CalendarActivity extends AppCompatActivity {
     private int periodLength;
     private int cycleLength;
 
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +85,8 @@ public class CalendarActivity extends AppCompatActivity {
 
         adapter.setNotes(tappedDatenotes);
     }
-    
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void getDateFromSetting() {
         startingDay = SettingActivity.getStartingDay();
         startingMonth = SettingActivity.getStartingMonth();
@@ -90,9 +95,43 @@ public class CalendarActivity extends AppCompatActivity {
         periodLength = SettingActivity.getPeriodLength();
         cycleLength = SettingActivity.getCycleLength();
 
-        txtSettingData.setText("Period Length: " + periodLength + "\nCycleLength: " + cycleLength + "\nstarting date: " + startingDay + "-" + startingMonth + "-" + startingYear);
 
-//        calendarView.setSelectedWeekBackgroundColor(getResources().getColor(R.color.purple_200));
+        setPeriodDatesOfAllMonths();
+
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void setPeriodDatesOfAllMonths() {
+        StringBuilder AllPeriodDays = new StringBuilder();
+        LocalDate localDate = LocalDate.of(startingYear, startingMonth, startingDay);
+        LocalDate PeriodStartingLocalDate = LocalDate.of(startingYear, startingMonth, startingDay);
+
+        ArrayList<String> allPeriods = new ArrayList<>();
+
+        int monthsLeft = 6;
+
+        while(monthsLeft > 0) {
+            PeriodStartingLocalDate = localDate;
+
+            for (int i = 1 ; i <= periodLength; i++) {
+                allPeriods.add(localDate.toString());
+                AllPeriodDays.append(localDate + " ");
+
+                if(i != periodLength) {
+                    localDate = localDate.plusDays(1);
+                }
+            }
+
+            AllPeriodDays.append("\n\n");
+            localDate = PeriodStartingLocalDate.plusDays(cycleLength);
+
+            monthsLeft--;
+        }
+
+        txtSettingData.setText("Period Length: " + periodLength + "\nCycleLength: " + cycleLength +
+                "\nstarting date: " + startingDay + "-" + startingMonth + "-" + startingYear +
+                "\nPeriod Dates: \n" + AllPeriodDays);
     }
 
     private void onSetListeners() {
