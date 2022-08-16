@@ -103,35 +103,41 @@ public class CalendarActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setPeriodDatesOfAllMonths() {
-        StringBuilder AllPeriodDays = new StringBuilder();
+        StringBuilder allPeriodDays = new StringBuilder();
         LocalDate localDate = LocalDate.of(startingYear, startingMonth, startingDay);
-        LocalDate PeriodStartingLocalDate = LocalDate.of(startingYear, startingMonth, startingDay);
+        LocalDate periodStartingLocalDate = LocalDate.of(startingYear, startingMonth, startingDay);
 
         ArrayList<String> allPeriods = new ArrayList<>();
 
-        int monthsLeft = 6;
+        int monthsLeft = 12;
 
         while(monthsLeft > 0) {
-            PeriodStartingLocalDate = localDate;
+            periodStartingLocalDate = localDate;
 
             for (int i = 1 ; i <= periodLength; i++) {
                 allPeriods.add(localDate.toString());
-                AllPeriodDays.append(localDate + " ");
+                if(i==1 || i == periodLength) {
+                    allPeriodDays.append(localDate);
+
+                    if(i==1){
+                        allPeriodDays.append(" To ");
+                    }
+                }
 
                 if(i != periodLength) {
                     localDate = localDate.plusDays(1);
                 }
             }
 
-            AllPeriodDays.append("\n\n");
-            localDate = PeriodStartingLocalDate.plusDays(cycleLength);
+            allPeriodDays.append("\n\n");
+            localDate = periodStartingLocalDate.plusDays(cycleLength);
 
             monthsLeft--;
         }
 
         txtSettingData.setText("Period Length: " + periodLength + "\nCycleLength: " + cycleLength +
-                "\nstarting date: " + startingDay + "-" + startingMonth + "-" + startingYear +
-                "\nPeriod Dates: \n" + AllPeriodDays);
+                "\nstarting date: " + startingYear + "-" + startingMonth + "-" + startingDay +
+                "\nPeriod Dates: \n" + allPeriodDays);
     }
 
     private void onSetListeners() {
