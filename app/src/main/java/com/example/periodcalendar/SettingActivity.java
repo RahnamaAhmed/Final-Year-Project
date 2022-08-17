@@ -17,6 +17,7 @@ import java.util.Calendar;
 
 public class SettingActivity extends AppCompatActivity {
 
+    private Util util;
     private TextView periodLengthTxt;
     private TextView cycleLengthTxt;
 
@@ -28,8 +29,8 @@ public class SettingActivity extends AppCompatActivity {
     private ArrayList<Integer> periodLengthDays;
     private ArrayList<Integer> cycleLengthDays;
 
-    private static int periodLength = 5;
-    private static int cycleLength = 28;
+    private static int periodLength;
+    private static int cycleLength;
 
     private static int startingDay = calendar.get(Calendar.DAY_OF_MONTH);
     private static int startingMonth = calendar.get(Calendar.MONTH) + 1;
@@ -62,6 +63,9 @@ public class SettingActivity extends AppCompatActivity {
 
         simpleDatePickerStartingDate = (DatePicker) findViewById(R.id.simpleDatePickerStartingDate);
 
+        util = new Util();
+        periodLength = util.getPeriodLength();
+        cycleLength = util.getCycleLength();
     }
 
     private void setPeriodSpinner (){
@@ -103,6 +107,7 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 periodLength = periodLengthDays.get(i);
+                util.setPeriodLength(periodLength);
             }
 
             @Override
@@ -110,10 +115,6 @@ public class SettingActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    public static int getPeriodLength () {
-        return periodLength;
     }
 
     private void setCycleLength () {
@@ -121,6 +122,7 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 cycleLength = cycleLengthDays.get(i);
+                util.setCycleLength(cycleLength);
             }
 
             @Override
@@ -130,28 +132,16 @@ public class SettingActivity extends AppCompatActivity {
         });
     }
 
-    public static int getCycleLength () {
-        return cycleLength;
-    }
-
     private void setDate () {
         simpleDatePickerStartingDate.init(startingYear, startingMonth, startingDay, (datePicker, i, i1, i2) -> {
             startingDay = i2;
             startingMonth= i1;
             startingYear = i;
+
+            util.setPeriodStartingDay(startingDay);
+            util.setPeriodStartingMonth(startingMonth);
+            util.setPeriodStartingYear(startingYear);
         });
-    }
-
-    public static int getStartingDay () {
-        return startingDay;
-    }
-
-    public static int getStartingMonth () {
-        return startingMonth;
-    }
-
-    public static int getStartingYear () {
-        return startingYear;
     }
 
     @Override

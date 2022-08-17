@@ -30,6 +30,7 @@ public class CalendarActivity extends AppCompatActivity {
     private ImageView ivAddNewNote;
     private RecyclerView noteRecycleView;
     private Calendar calendar = Calendar.getInstance();
+    private Util util;
 
 
     private int tappedDay =  calendar.get(Calendar.DAY_OF_MONTH);
@@ -54,7 +55,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         initWidgets();
         initRecView();
-        getDateFromSetting();
+        getDate();
         onSetListeners();
 
     }
@@ -64,7 +65,7 @@ public class CalendarActivity extends AppCompatActivity {
         txtSettingData = (TextView) findViewById(R.id.txtSettingData);
         ivAddNewNote = (ImageView) findViewById(R.id.ivAddNewNote);
         noteRecycleView = (RecyclerView) findViewById(R.id.noteRecycleView);
-
+        util = new Util();
     }
 
     private void initRecView() {
@@ -87,13 +88,13 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void getDateFromSetting() {
-        startingDay = SettingActivity.getStartingDay();
-        startingMonth = SettingActivity.getStartingMonth();
-        startingYear = SettingActivity.getStartingYear();
+    private void getDate() {
+        startingDay = util.getPeriodStartingDay();
+        startingMonth = util.getPeriodStartingMonth();
+        startingYear = util.getPeriodStartingYear();
 
-        periodLength = SettingActivity.getPeriodLength();
-        cycleLength = SettingActivity.getCycleLength();
+        periodLength = util.getPeriodLength();
+        cycleLength = util.getCycleLength();
 
 
         setPeriodDatesOfAllMonths();
