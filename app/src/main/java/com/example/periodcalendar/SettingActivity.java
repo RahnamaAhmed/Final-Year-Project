@@ -3,6 +3,7 @@ package com.example.periodcalendar;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ import java.util.Calendar;
 
 public class SettingActivity extends AppCompatActivity {
 
+    private SharedPreferences sharedPreferences;
     private Util util;
     private TextView periodLengthTxt;
     private TextView cycleLengthTxt;
@@ -44,13 +46,11 @@ public class SettingActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initWidgets();
-
+        getDate();
         setPeriodSpinner();
         setCycleSpinner();
-
         setPeriodLength();
         setCycleLength();
-
         setDate();
     }
 
@@ -62,10 +62,23 @@ public class SettingActivity extends AppCompatActivity {
         cycleLengthSpinner = (Spinner) findViewById(R.id.cycleLengthSpinner);
 
         simpleDatePickerStartingDate = (DatePicker) findViewById(R.id.simpleDatePickerStartingDate);
+    }
 
+    private void getDate() {
+        sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         util = new Util();
-        periodLength = util.getPeriodLength();
-        cycleLength = util.getCycleLength();
+//        periodLength = util.getPeriodLength();
+//        cycleLength = util.getCycleLength();
+//        startingDay = util.getPeriodStartingDay();
+//        startingMonth = util.getPeriodStartingMonth();
+//        startingYear = util.getPeriodStartingYear();
+
+        periodLength = sharedPreferences.getInt("periodLength", 5);
+        cycleLength = sharedPreferences.getInt("cycleLength", 28);
+
+        startingDay = sharedPreferences.getInt("startingDay", calendar.get(Calendar.DAY_OF_MONTH));
+        startingMonth = sharedPreferences.getInt("startingMonth", calendar.get(Calendar.MONTH) + 1);
+        startingYear = sharedPreferences.getInt("startingYear", calendar.get(Calendar.YEAR));
     }
 
     private void setPeriodSpinner (){
@@ -108,6 +121,12 @@ public class SettingActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 periodLength = periodLengthDays.get(i);
                 util.setPeriodLength(periodLength);
+
+                sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                editor.putInt("periodLength", periodLength);
+                editor.apply();
             }
 
             @Override
@@ -123,6 +142,12 @@ public class SettingActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 cycleLength = cycleLengthDays.get(i);
                 util.setCycleLength(cycleLength);
+
+                sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                editor.putInt("cycleLength", cycleLength);
+                editor.apply();
             }
 
             @Override
@@ -141,6 +166,14 @@ public class SettingActivity extends AppCompatActivity {
             util.setPeriodStartingDay(startingDay);
             util.setPeriodStartingMonth(startingMonth);
             util.setPeriodStartingYear(startingYear);
+
+            sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putInt("startingDay", startingDay);
+            editor.putInt("startingMonth", startingMonth);
+            editor.putInt("startingYear", startingYear);
+            editor.apply();
         });
     }
 

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -31,7 +32,7 @@ public class CalendarActivity extends AppCompatActivity {
     private RecyclerView noteRecycleView;
     private Calendar calendar = Calendar.getInstance();
     private Util util;
-
+    private SharedPreferences sharedPreferences;
 
     private int tappedDay =  calendar.get(Calendar.DAY_OF_MONTH);
     private int tappedMonth = calendar.get(Calendar.MONTH) + 1;
@@ -55,7 +56,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         initWidgets();
         initRecView();
-        getDate();
+        getData();
         onSetListeners();
 
     }
@@ -88,25 +89,31 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void getDate() {
-        startingDay = util.getPeriodStartingDay();
-        startingMonth = util.getPeriodStartingMonth();
-        startingYear = util.getPeriodStartingYear();
+    private void getData() {
+//        startingDay = util.getPeriodStartingDay();
+//        startingMonth = util.getPeriodStartingMonth();
+//        startingYear = util.getPeriodStartingYear();
+//
+//        periodLength = util.getPeriodLength();
+//        cycleLength = util.getCycleLength();
 
-        periodLength = util.getPeriodLength();
-        cycleLength = util.getCycleLength();
+        sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
 
+        periodLength = sharedPreferences.getInt("periodLength", 5);
+        cycleLength = sharedPreferences.getInt("cycleLength", 28);
+
+        startingDay = sharedPreferences.getInt("startingDay", calendar.get(Calendar.DAY_OF_MONTH));
+        startingMonth = sharedPreferences.getInt("startingMonth", calendar.get(Calendar.MONTH) + 1);
+        startingYear = sharedPreferences.getInt("startingYear", calendar.get(Calendar.YEAR));
 
         setPeriodDatesOfAllMonths();
-
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setPeriodDatesOfAllMonths() {
         StringBuilder allPeriodDays = new StringBuilder();
         LocalDate localDate = LocalDate.of(startingYear, startingMonth, startingDay);
-        LocalDate periodStartingLocalDate = LocalDate.of(startingYear, startingMonth, startingDay);
+        LocalDate periodStartingLocalDate;
 
         ArrayList<String> allPeriods = new ArrayList<>();
 
@@ -115,7 +122,7 @@ public class CalendarActivity extends AppCompatActivity {
         while(monthsLeft > 0) {
             periodStartingLocalDate = localDate;
 
-            for (int i = 1 ; i <= periodLength; i++) {
+            for (int i = 1; i <= periodLength; i++) {
                 allPeriods.add(localDate.toString());
                 if(i==1 || i == periodLength) {
                     allPeriodDays.append(localDate);
