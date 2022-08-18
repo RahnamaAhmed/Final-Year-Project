@@ -66,7 +66,7 @@ public class SettingActivity extends AppCompatActivity {
 
     private void getDate() {
         sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
-        util = new Util();
+//        util = new Util();
 //        periodLength = util.getPeriodLength();
 //        cycleLength = util.getCycleLength();
 //        startingDay = util.getPeriodStartingDay();
@@ -120,7 +120,7 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 periodLength = periodLengthDays.get(i);
-                util.setPeriodLength(periodLength);
+//                util.setPeriodLength(periodLength);
 
                 sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -130,9 +130,7 @@ public class SettingActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) { }
         });
     }
 
@@ -141,7 +139,7 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 cycleLength = cycleLengthDays.get(i);
-                util.setCycleLength(cycleLength);
+//                util.setCycleLength(cycleLength);
 
                 sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -151,9 +149,7 @@ public class SettingActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) { }
         });
     }
 
@@ -163,9 +159,9 @@ public class SettingActivity extends AppCompatActivity {
             startingMonth= i1;
             startingYear = i;
 
-            util.setPeriodStartingDay(startingDay);
-            util.setPeriodStartingMonth(startingMonth);
-            util.setPeriodStartingYear(startingYear);
+//            util.setPeriodStartingDay(startingDay);
+//            util.setPeriodStartingMonth(startingMonth);
+//            util.setPeriodStartingYear(startingYear);
 
             sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();

@@ -17,6 +17,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,13 +30,15 @@ import java.util.GregorianCalendar;
 public class CalendarActivity extends AppCompatActivity {
     private static final String TAG = "CalendarActivity";
 
+    private Util util;
+    private SharedPreferences sharedPreferences;
+    private Gson gson;
+
     private CalendarView calendarView;
     private TextView txtSettingData;
     private ImageView ivAddNewNote;
     private RecyclerView noteRecycleView;
     private Calendar calendar = Calendar.getInstance();
-    private Util util;
-    private SharedPreferences sharedPreferences;
 
     private int tappedDay =  calendar.get(Calendar.DAY_OF_MONTH);
     private int tappedMonth = calendar.get(Calendar.MONTH) + 1;
@@ -44,6 +50,8 @@ public class CalendarActivity extends AppCompatActivity {
     private int startingYear;
     private int periodLength;
     private int cycleLength;
+    private ArrayList<Note> allNotes;
+    private String allNotesJson;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -58,7 +66,6 @@ public class CalendarActivity extends AppCompatActivity {
         initRecView();
         getData();
         onSetListeners();
-
     }
 
     private void initWidgets() {
@@ -66,7 +73,7 @@ public class CalendarActivity extends AppCompatActivity {
         txtSettingData = (TextView) findViewById(R.id.txtSettingData);
         ivAddNewNote = (ImageView) findViewById(R.id.ivAddNewNote);
         noteRecycleView = (RecyclerView) findViewById(R.id.noteRecycleView);
-        util = new Util();
+//        util = new Util();
     }
 
     private void initRecView() {
@@ -74,18 +81,32 @@ public class CalendarActivity extends AppCompatActivity {
         noteRecycleView.setAdapter(adapter);
         noteRecycleView.setLayoutManager(new LinearLayoutManager(this));
 
-        Util util = new Util();
-        ArrayList<Note> notes = new ArrayList<>();
-        ArrayList<Note> tappedDatenotes = new ArrayList<>();
-        notes = util.getAllNotes();
+//        Util util = new Util();
+//        allNotes = util.getAllNotes();
 
-        for(Note note: notes) {
+        ArrayList<Note> tappedDateNotes = new ArrayList<>();
+        loadAllNotes();
+
+        for(Note note: allNotes) {
             if(note.getDate().equals(tappedDate)){
-                tappedDatenotes.add(note);
+                tappedDateNotes.add(note);
             }
         }
 
-        adapter.setNotes(tappedDatenotes);
+        adapter.setNotes(tappedDateNotes);
+    }
+
+    private void loadAllNotes() {
+        sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        gson = new Gson();
+
+        Type type = new TypeToken<ArrayList<Note>>(){}.getType();
+        allNotesJson = sharedPreferences.getString("allNotes", null);
+        allNotes = gson.fromJson(allNotesJson, type);
+
+        if(allNotes == null){
+            allNotes = new ArrayList<>();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -137,14 +158,13 @@ public class CalendarActivity extends AppCompatActivity {
                 }
             }
 
-            allPeriodDays.append("\n\n");
+            allPeriodDays.append("\n");
             localDate = periodStartingLocalDate.plusDays(cycleLength);
 
             monthsLeft--;
         }
 
-        txtSettingData.setText("Period Length: " + periodLength + "\nCycleLength: " + cycleLength +
-                "\nstarting date: " + startingYear + "-" + startingMonth + "-" + startingDay +
+        txtSettingData.setText("Period starting date: " + startingYear + "-" + startingMonth + "-" + startingDay +
                 "\nPeriod Dates: \n" + allPeriodDays);
     }
 

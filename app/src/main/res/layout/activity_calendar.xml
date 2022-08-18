@@ -6,36 +6,45 @@
     android:layout_height="match_parent"
     tools:context=".CalendarActivity">
 
-    <CalendarView
-        android:id="@+id/calendarView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_centerHorizontal="true" />
+        android:layout_height="match_parent"
+        >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/calendarView"
-        android:text="date"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/txtSettingData" />
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtSettingData"
-        android:id="@+id/noteRecycleView"/>
+           <CalendarView
+               android:id="@+id/calendarView"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_centerHorizontal="true"
+               android:layout_marginTop="10dp" />
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/ivAddNewNote"
-        android:src="@drawable/ic_add_circle"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="5dp"/>
-    
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_below="@id/calendarView"
+               android:text="date"
+               android:layout_centerHorizontal="true"
+               android:id="@+id/txtSettingData" />
 
+           <androidx.recyclerview.widget.RecyclerView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_below="@id/txtSettingData"
+               android:id="@+id/noteRecycleView"/>
+
+           <ImageView
+               android:layout_width="50dp"
+               android:layout_height="50dp"
+               android:id="@+id/ivAddNewNote"
+               android:src="@drawable/ic_add_circle"
+               android:layout_alignParentEnd="true"
+               android:layout_alignParentBottom="true"
+               android:layout_marginBottom="5dp"
+               android:layout_marginEnd="5dp"/>
+       </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

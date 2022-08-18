@@ -5,17 +5,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class AllNotesActivity extends AppCompatActivity {
 
     private RecyclerView noteRecycleView;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +31,6 @@ public class AllNotesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initWidgets();
-
     }
 
     private void initWidgets() {
@@ -36,9 +41,21 @@ public class AllNotesActivity extends AppCompatActivity {
         noteRecycleView.setLayoutManager(new LinearLayoutManager(this));
 
         Util util = new Util();
-        ArrayList<Note> notes = new ArrayList<>();
-        notes = util.getAllNotes();
-        adapter.setNotes(notes);
+        ArrayList<Note> allNotes = new ArrayList<>();
+//        allNotes = util.getAllNotes();
+
+        sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String allNotesJson = sharedPreferences.getString("allNotes", null);
+
+        Type type = new TypeToken<ArrayList<Note>>(){}.getType();
+        allNotes = gson.fromJson(allNotesJson, type);
+
+        if(allNotes == null){
+            allNotes = new ArrayList<>();
+        }
+
+        adapter.setNotes(allNotes);
     }
 
 

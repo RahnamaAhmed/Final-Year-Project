@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,16 +15,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AddNoteActivity extends AppCompatActivity {
+
+    private Util util;
+    private SharedPreferences sharedPreferences;
+    private Gson gson;
 
     private TextView txtNoteDate;
     private EditText etNoteName;
     private Button btnNoteAdd;
     private Calendar calendar = Calendar.getInstance();
-    private Util util;
 
+    private ArrayList<Note> allNotes;
+    private String allNotesJson;
     private int day;
     private int month;
     private int year;
@@ -45,7 +56,7 @@ public class AddNoteActivity extends AppCompatActivity {
         etNoteName = (EditText) findViewById(R.id.etNoteName);
         btnNoteAdd = (Button) findViewById(R.id.btnNoteAdd);
 
-        util = new Util();
+//        util = new Util();
     }
 
     private void setDate(){
@@ -56,21 +67,51 @@ public class AddNoteActivity extends AppCompatActivity {
         month = bundle.getInt("month", calendar.get(Calendar.MONTH) + 1);
         year = bundle.getInt("year", calendar.get(Calendar.YEAR));
 
-        txtNoteDate.setText(day + "-" + month +"-"+ year);
+        txtNoteDate.setText(year + "-" + month +"-"+ day);
     }
 
     private void onSetListeners() {
         btnNoteAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String date = day + "-" + month +"-"+ year;
-                util.SetNote(date, etNoteName.getText().toString());
+                String date = year + "-" + month +"-"+ day;
+//                util.SetNote(date, etNoteName.getText().toString());
 
-                Intent intent = new Intent(AddNoteActivity.this, MainActivity.class);
-                startActivity(intent);
+                laodAllNotes();
+                addNote(date, etNoteName.getText().toString());
+                gotoMainActivity();
             }
         });
+    }
 
+    private void laodAllNotes() {
+        sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        gson = new Gson();
+
+        Type type = new TypeToken<ArrayList<Note>>(){}.getType();
+        allNotesJson = sharedPreferences.getString("allNotes", null);
+        allNotes = gson.fromJson(allNotesJson, type);
+
+        if(allNotes == null){
+            allNotes = new ArrayList<>();
+        }
+    }
+
+    private void addNote(String date, String noteName) {
+        sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        gson = new Gson();
+
+        allNotes.add(new Note(allNotes.size(), date, noteName));
+        allNotesJson = gson.toJson(allNotes);
+
+        editor.putString("allNotes", allNotesJson);
+        editor.apply();
+    }
+
+    private void gotoMainActivity() {
+        Intent intent = new Intent(AddNoteActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
     @Override
