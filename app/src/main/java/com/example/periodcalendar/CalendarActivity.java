@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CalendarView;
@@ -43,7 +44,7 @@ public class CalendarActivity extends AppCompatActivity {
     private int tappedDay =  calendar.get(Calendar.DAY_OF_MONTH);
     private int tappedMonth = calendar.get(Calendar.MONTH) + 1;
     private int tappedYear = calendar.get(Calendar.YEAR);
-    private String tappedDate = tappedDay + "-"+ tappedMonth + "-" + tappedYear;
+    private String tappedDate = tappedYear + "-"+ tappedMonth + "-" + tappedDay;
 
     private int startingDay;
     private int startingMonth;
@@ -176,7 +177,7 @@ public class CalendarActivity extends AppCompatActivity {
                 tappedDay = i2;
                 tappedMonth = i1 + 1;
                 tappedYear = i;
-                tappedDate = tappedDay + "-"+ tappedMonth + "-" + tappedYear;
+                tappedDate = tappedYear + "-"+ tappedMonth + "-" + tappedDay;
 
                 initRecView();
             }
