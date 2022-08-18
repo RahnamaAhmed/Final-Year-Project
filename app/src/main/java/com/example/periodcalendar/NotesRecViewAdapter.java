@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,16 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 public class NotesRecViewAdapter extends RecyclerView.Adapter<NotesRecViewAdapter.ViewHolder> {
-    private ArrayList<Note> notes = new ArrayList<>();
+    private ArrayList<Note> allNotes = new ArrayList<>();
     private Context context;
     private Util util;
+    private SharedPreferences sharedPreferences;
+    private Gson gson;
 
     public NotesRecViewAdapter(Context context) {
         this.context = context;
@@ -39,44 +44,38 @@ public class NotesRecViewAdapter extends RecyclerView.Adapter<NotesRecViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        holder.txtNoteDate.setText(notes.get(position).getDate());
-        holder.txtNoteName.setText(notes.get(position).getName());
+        holder.txtNoteDate.setText(allNotes.get(position).getDate());
+        holder.txtNoteName.setText(allNotes.get(position).getName());
 
         holder.noteCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "HI", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "HI", Toast.LENGTH_SHORT).show();
             }
         });
 
         holder.noteCard.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                final Note note = notes.get(position);
+                final Note note = allNotes.get(position);
 
                  new AlertDialog.Builder(context)
-                        .setTitle("Deleting" + note.getName())
-                        .setMessage("Are yop sure you want to delete " + note.getName() + "?")
+                        .setTitle("Deleting " + note.getName())
+                        .setMessage("Are you sure you want to delete " + note.getName() + "?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                if(util.removeNote(notes.get(position))){
-                                    notifyDataSetChanged();
+                                allNotes.remove(note.getId());
+                                updateNotes();
 
-                                    Toast.makeText(context,
-                                            note.getName() + " Has successfully deleted",
-                                            Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(context, "Something went wrong",
-                                            Toast.LENGTH_SHORT).show();
-                                }
+                                notifyDataSetChanged();
+
+                                Toast.makeText(context, note.getName() + " Has successfully deleted", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                            }
+                            public void onClick(DialogInterface dialogInterface, int i) { }
                         })
                         .create()
                         .show();
@@ -88,7 +87,7 @@ public class NotesRecViewAdapter extends RecyclerView.Adapter<NotesRecViewAdapte
 
     @Override
     public int getItemCount() {
-        return notes.size();
+        return allNotes.size();
     }
 
     public class  ViewHolder extends RecyclerView.ViewHolder {
@@ -105,8 +104,19 @@ public class NotesRecViewAdapter extends RecyclerView.Adapter<NotesRecViewAdapte
         }
     }
 
+    private void updateNotes() {
+        sharedPreferences = context.getSharedPreferences("MySharedPref", context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        gson = new Gson();
+
+        String allNotesJson = gson.toJson(allNotes);
+
+        editor.putString("allNotes", allNotesJson);
+        editor.apply();
+    }
+
     public void setNotes(ArrayList<Note> notes) {
-        this.notes = notes;
+        this.allNotes = notes;
         notifyDataSetChanged();
     }
 }
