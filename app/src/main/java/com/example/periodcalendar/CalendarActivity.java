@@ -139,7 +139,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         ArrayList<String> allPeriods = new ArrayList<>();
 
-        int monthsLeft = 12;
+        int monthsLeft = 6;
 
         while(monthsLeft > 0) {
             periodStartingLocalDate = localDate;

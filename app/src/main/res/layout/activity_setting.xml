@@ -24,7 +24,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/periodLengthSpinner"
             android:layout_alignParentEnd="true"/>
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -45,15 +44,26 @@
             android:layout_height="wrap_content"
             android:id="@+id/cycleLengthSpinner"
             android:layout_alignParentEnd="true"/>
-
     </RelativeLayout>
 
-    <DatePicker
-        android:id="@+id/simpleDatePickerStartingDate"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/cycleLengthRelLayout"
-        android:layout_marginTop="20dp"
-        android:datePickerMode="spinner" />
+        android:id="@+id/StartingDateRelLayout"
+        android:layout_below="@id/cycleLengthRelLayout"
+        android:layout_marginTop="20dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/periodStartingDayTxt"
+            android:text="Period Starting day" />
+
+        <DatePicker
+            android:id="@+id/simpleDatePickerStartingDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/periodStartingDayTxt"
+            android:datePickerMode="spinner" />
+    </RelativeLayout>
 </RelativeLayout>
