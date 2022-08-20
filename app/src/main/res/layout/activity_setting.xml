@@ -14,16 +14,16 @@
         android:layout_marginTop="20dp">
 
         <TextView
+            android:id="@+id/periodLengthTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/periodLengthTxt"
             android:text="Period Length Days" />
 
         <Spinner
+            android:id="@+id/periodLengthSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/periodLengthSpinner"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -40,10 +40,10 @@
             android:text="Cycle Length Days" />
 
         <Spinner
+            android:id="@+id/cycleLengthSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/cycleLengthSpinner"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -54,9 +54,9 @@
         android:layout_marginTop="20dp">
 
         <TextView
+            android:id="@+id/periodStartingDayTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/periodStartingDayTxt"
             android:text="Period Starting day" />
 
         <DatePicker

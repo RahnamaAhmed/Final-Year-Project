@@ -1,17 +1,19 @@
 package com.example.periodcalendar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button buttonCalender;
-    private Button buttonSettings;
-    private Button buttonNotes;
+    private CardView cvCalendar;
+    private CardView cvNote;
+    private CardView cvSetting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,16 +26,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void initWidgets(){
-        buttonCalender = (Button) findViewById(R.id.buttonCalender);
-        buttonSettings = (Button) findViewById(R.id.buttonSettings);
-        buttonNotes = (Button) findViewById(R.id.buttonNotes);
+    private void initWidgets() {
+        cvCalendar = findViewById(R.id.cvCalender);
+        cvNote = findViewById(R.id.cvNotes);
+        cvSetting = findViewById(R.id.cvSetting);
     }
 
 
-
-    private void onSetListeners () {
-        buttonCalender.setOnClickListener(new View.OnClickListener() {
+    private void onSetListeners() {
+        cvCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, CalendarActivity.class);
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        buttonNotes.setOnClickListener(new View.OnClickListener() {
+        cvNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AllNotesActivity.class);
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        buttonSettings.setOnClickListener(new View.OnClickListener() {
+        cvSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, SettingActivity.class);
