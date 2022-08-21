@@ -62,8 +62,9 @@ public class CalendarActivity extends AppCompatActivity {
     private int cycleLength;
     private ArrayList<Note> allNotes;
     private String allNotesJson;
-      List<String> periodDays = Arrays.asList(
+      List<String> customPeriodDays = Arrays.asList(
             "2022-08-09","2022-08-10","2022-08-11","2022-08-12","2022-08-13");
+      ArrayList<String> periodDaysList = new ArrayList<String>();
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -88,8 +89,6 @@ public class CalendarActivity extends AppCompatActivity {
         final LocalDate min = getLocalDate("2020-01-01");
         final  LocalDate max = getLocalDate("2024-12-30");
         calendarView.state().edit().setMinimumDate(min).setMaximumDate(max).commit();
-        setEvent(periodDays, 1);
-        calendarView.invalidateDecorators();
     }
 
     private void initRecView() {
@@ -158,6 +157,7 @@ public class CalendarActivity extends AppCompatActivity {
 
             for (int i = 1; i <= periodLength; i++) {
                 allPeriods.add(localDate.toString());
+                periodDaysList.add(localDate.toString());
                 if(i==1 || i == periodLength) {
                     allPeriodDays.append(localDate);
 
@@ -169,6 +169,7 @@ public class CalendarActivity extends AppCompatActivity {
                 if(i != periodLength) {
                     localDate = localDate.plusDays(1);
                 }
+
             }
 
             allPeriodDays.append("\n");
@@ -179,6 +180,9 @@ public class CalendarActivity extends AppCompatActivity {
 
         txtSettingData.setText("Period starting date: " + startingYear + "-" + startingMonth + "-" + startingDay +
                 "\nPeriod Dates: \n" + allPeriodDays);
+
+        setEvent(periodDaysList, 1);
+        calendarView.invalidateDecorators();
     }
 
     private void onSetListeners() {
