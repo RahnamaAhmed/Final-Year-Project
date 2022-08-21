@@ -17,6 +17,12 @@
             android:name=".AllNotesActivity"
             android:exported="false" />
         <activity
+            android:name=".BmiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BmiResultActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddNoteActivity"
             android:exported="false" />
         <activity

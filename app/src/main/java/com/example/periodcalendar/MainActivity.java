@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     private CardView cvCalendar;
     private CardView cvNote;
     private CardView cvSetting;
+    private CardView cvBMI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         cvCalendar = findViewById(R.id.cvCalender);
         cvNote = findViewById(R.id.cvNotes);
         cvSetting = findViewById(R.id.cvSetting);
+        cvBMI = findViewById(R.id.cvBMI);
     }
 
 
@@ -54,6 +56,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        cvBMI.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, BmiActivity.class);
                 startActivity(intent);
             }
         });
