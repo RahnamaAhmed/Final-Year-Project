@@ -1,5 +1,7 @@
 package com.example.periodcalendar;
 
+import static android.provider.Settings.System.DATE_FORMAT;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,25 +10,32 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+
+import java.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class CalendarActivity extends AppCompatActivity {
     private static final String TAG = "CalendarActivity";
@@ -35,7 +44,7 @@ public class CalendarActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private Gson gson;
 
-    private CalendarView calendarView;
+    MaterialCalendarView calendarView;
     private TextView txtSettingData;
     private ImageView ivAddNewNote;
     private RecyclerView noteRecycleView;
@@ -53,7 +62,8 @@ public class CalendarActivity extends AppCompatActivity {
     private int cycleLength;
     private ArrayList<Note> allNotes;
     private String allNotesJson;
-
+      List<String> periodDays = Arrays.asList(
+            "2022-08-09","2022-08-10","2022-08-11","2022-08-12","2022-08-13");
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -70,20 +80,22 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     private void initWidgets() {
-        calendarView = (CalendarView) findViewById(R.id.calendarView);
+        calendarView =  findViewById(R.id.calendarView);
         txtSettingData = (TextView) findViewById(R.id.txtSettingData);
         ivAddNewNote = (ImageView) findViewById(R.id.ivAddNewNote);
         noteRecycleView = (RecyclerView) findViewById(R.id.noteRecycleView);
-//        util = new Util();
+        calendarView.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
+        final LocalDate min = getLocalDate("2020-01-01");
+        final  LocalDate max = getLocalDate("2024-12-30");
+        calendarView.state().edit().setMinimumDate(min).setMaximumDate(max).commit();
+        setEvent(periodDays, 1);
+        calendarView.invalidateDecorators();
     }
 
     private void initRecView() {
         NotesRecViewAdapter adapter = new NotesRecViewAdapter(this);
         noteRecycleView.setAdapter(adapter);
         noteRecycleView.setLayoutManager(new LinearLayoutManager(this));
-
-//        Util util = new Util();
-//        allNotes = util.getAllNotes();
 
         ArrayList<Note> tappedDateNotes = new ArrayList<>();
         loadAllNotes();
@@ -171,17 +183,7 @@ public class CalendarActivity extends AppCompatActivity {
 
     private void onSetListeners() {
 
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-                tappedDay = i2;
-                tappedMonth = i1 + 1;
-                tappedYear = i;
-                tappedDate = tappedYear + "-"+ tappedMonth + "-" + tappedDay;
 
-                initRecView();
-            }
-        });
 
         ivAddNewNote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,5 +216,73 @@ public class CalendarActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    void setEvent(List<String> dateList, int color) {
+        List<org.threeten.bp.LocalDate> localDateList = new ArrayList<>();
+
+        for (String string : dateList) {
+            org.threeten.bp.LocalDate calendar = getLocalDate(string);
+            if (calendar != null) {
+                localDateList.add(calendar);
+            }
+        }
+
+
+        List<CalendarDay> datesLeft = new ArrayList<>();
+        List<CalendarDay> datesCenter = new ArrayList<>();
+        List<CalendarDay> datesRight = new ArrayList<>();
+        List<CalendarDay> datesIndependent = new ArrayList<>();
+
+
+        for (org.threeten.bp.LocalDate localDate : localDateList) {
+
+            boolean right = false;
+            boolean left = false;
+
+            for (org.threeten.bp.LocalDate day1 : localDateList) {
+
+
+                if (localDate.isEqual(day1.plusDays(1))) {
+                    left = true;
+                }
+                if (day1.isEqual(localDate.plusDays(1))) {
+                    right = true;
+                }
+            }
+
+            if (left && right) {
+                datesCenter.add(CalendarDay.from(localDate));
+            } else if (left) {
+                datesLeft.add(CalendarDay.from(localDate));
+            } else if (right) {
+                datesRight.add(CalendarDay.from(localDate));
+            } else {
+                datesIndependent.add(CalendarDay.from(localDate));
+            }
+        }
+
+        if (color == 1) {
+            setDecor(datesCenter, R.drawable.p_center);
+            setDecor(datesLeft, R.drawable.p_left);
+            setDecor(datesRight, R.drawable.p_right);
+            setDecor(datesIndependent, R.drawable.p_independent);
+        } else {
+            setDecor(datesCenter, R.drawable.g_center);
+            setDecor(datesLeft, R.drawable.g_left);
+            setDecor(datesRight, R.drawable.g_right);
+            setDecor(datesIndependent, R.drawable.g_independent);
+        }
+    }
+
+    void setDecor(List<CalendarDay> calendarDayList, int drawable) {
+        calendarView.addDecorators(new EventDecorator(CalendarActivity.this
+                , drawable
+                , calendarDayList));
+    }
+
+    LocalDate getLocalDate(String date) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault());
+       return LocalDate.parse(date, dtf);
     }
 }
